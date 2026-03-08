@@ -80,6 +80,10 @@ const messages = {
         counting: 'かぞえる',
         // 漢字入門
         kanjiIntro: 'かんじ',
+        // 並べ替え
+        sorting: 'ならべかえ',
+        // ダッシュボード
+        dashboard: 'とうけい',
     },
     zh: {
         appName: '笑笑学园',
@@ -148,6 +152,10 @@ const messages = {
         counting: '数一数',
         // 漢字入門
         kanjiIntro: '汉字入门',
+        // 並べ替え
+        sorting: '排序游戏',
+        // ダッシュボード
+        dashboard: '学习报告',
     },
 };
 

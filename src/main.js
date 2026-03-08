@@ -16,6 +16,8 @@ import { renderKatakana } from './pages/katakana.js';
 import { renderMemoryGame } from './pages/memory-game.js';
 import { renderCountingGame } from './pages/counting-game.js';
 import { renderKanjiIntro } from './pages/kanji-intro.js';
+import { renderSortingGame } from './pages/sorting-game.js';
+import { renderParentDashboard } from './pages/parent-dashboard.js';
 import { initAudio } from './audio.js';
 
 const app = document.getElementById('app');
@@ -38,6 +40,8 @@ const pages = {
     'memory-game': renderMemoryGame,
     'counting-game': renderCountingGame,
     'kanji-intro': renderKanjiIntro,
+    'sorting-game': renderSortingGame,
+    'parent-dashboard': renderParentDashboard,
 };
 
 /**

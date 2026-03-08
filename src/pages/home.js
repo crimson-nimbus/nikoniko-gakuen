@@ -19,11 +19,13 @@ export function renderHome(container, navigate) {
     { id: 'videos', icon: '🎬', labelKey: 'videos', bg: 'var(--color-blue-soft)' },
     { id: 'music', icon: '🎵', labelKey: 'music', bg: 'var(--color-green-soft)' },
     { id: 'counting-game', icon: '🔢', labelKey: 'counting', bg: 'var(--color-green-soft)', ageGroup: '3-4' },
+    { id: 'sorting-game', icon: '📏', labelKey: 'sorting', bg: 'var(--color-orange-soft)', ageGroup: '3-4' },
     { id: 'hiragana', icon: 'あ', labelKey: 'hiragana', bg: 'var(--color-purple-soft)', ageGroup: '5-6' },
     { id: 'katakana', icon: 'ア', labelKey: 'katakana', bg: 'var(--color-purple-soft)', ageGroup: '5-6' },
     { id: 'pinyin', icon: '拼', labelKey: 'pinyin', bg: 'var(--color-blue-soft)', ageGroup: '5-6' },
     { id: 'kanji-intro', icon: '字', labelKey: 'kanjiIntro', bg: 'var(--color-orange-soft)', ageGroup: '5-6' },
     { id: 'math-game', icon: '🧮', labelKey: 'math', bg: 'var(--color-orange-soft)', ageGroup: '5-6' },
+    { id: 'parent-dashboard', icon: '📊', labelKey: 'dashboard', bg: 'var(--color-blue-soft)' },
   ];
 
   // 年齢フィルタリング
