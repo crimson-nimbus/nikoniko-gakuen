@@ -72,6 +72,10 @@ const messages = {
         pinyin: 'ピンイン',
         shengmu: 'しせいぼ',
         yunmu: 'いんぼ',
+        // カタカナ
+        katakana: 'カタカナ',
+        // 記憶ゲーム
+        memory: 'きおくゲーム',
     },
     zh: {
         appName: '笑笑学园',
@@ -132,6 +136,10 @@ const messages = {
         pinyin: '拼音',
         shengmu: '声母',
         yunmu: '韵母',
+        // カタカナ
+        katakana: '片假名',
+        // 記憶ゲーム
+        memory: '记忆游戏',
     },
 };
 

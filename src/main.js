@@ -12,6 +12,8 @@ import { renderSettings } from './pages/settings.js';
 import { renderHiragana } from './pages/hiragana.js';
 import { renderMathGame } from './pages/math-game.js';
 import { renderPinyin } from './pages/pinyin.js';
+import { renderKatakana } from './pages/katakana.js';
+import { renderMemoryGame } from './pages/memory-game.js';
 import { initAudio } from './audio.js';
 
 const app = document.getElementById('app');
@@ -30,6 +32,8 @@ const pages = {
     hiragana: renderHiragana,
     'math-game': renderMathGame,
     pinyin: renderPinyin,
+    katakana: renderKatakana,
+    'memory-game': renderMemoryGame,
 };
 
 /**

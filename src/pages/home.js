@@ -14,10 +14,12 @@ import { playSound, initAudio } from '../audio.js';
 export function renderHome(container, navigate) {
   const allMenuItems = [
     { id: 'flashcards', icon: '🃏', labelKey: 'flashcards', bg: 'var(--color-yellow-soft)' },
+    { id: 'memory-game', icon: '🎴', labelKey: 'memory', bg: 'var(--color-pink-soft)' },
     { id: 'touch-play', icon: '👆', labelKey: 'touchPlay', bg: 'var(--color-pink-soft)' },
     { id: 'videos', icon: '🎬', labelKey: 'videos', bg: 'var(--color-blue-soft)' },
     { id: 'music', icon: '🎵', labelKey: 'music', bg: 'var(--color-green-soft)' },
     { id: 'hiragana', icon: 'あ', labelKey: 'hiragana', bg: 'var(--color-purple-soft)', ageGroup: '5-6' },
+    { id: 'katakana', icon: 'ア', labelKey: 'katakana', bg: 'var(--color-purple-soft)', ageGroup: '5-6' },
     { id: 'pinyin', icon: '拼', labelKey: 'pinyin', bg: 'var(--color-blue-soft)', ageGroup: '5-6' },
     { id: 'math-game', icon: '🧮', labelKey: 'math', bg: 'var(--color-orange-soft)', ageGroup: '5-6' },
   ];
