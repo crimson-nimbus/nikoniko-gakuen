@@ -7,6 +7,13 @@ import { t, tBoth, getLang, getAge } from '../i18n.js';
 import { playSound, speak, speakBoth } from '../audio.js';
 import { categories, flashcardData } from '../data/flashcard-data.js';
 
+/** public/ 配下の静的アセットURLを解決（GitHub Pages対応） */
+const assetUrl = (path) => {
+  const base = import.meta.env.BASE_URL || '/';
+  // path が /images/... 形式の場合、先頭の / を除いて base と結合
+  return path.startsWith('/') ? `${base}${path.slice(1)}` : `${base}${path}`;
+};
+
 /**
  * 年齢に応じたカテゴリをフィルタリング
  * '1-2' → 1-2歳のみ
@@ -93,7 +100,7 @@ function renderCardView(container, navigate, categoryId) {
         <div class="flashcard-container">
           <div class="flashcard" id="flashcard-main">
             <img class="flashcard__image" 
-                 src="${card.image}" 
+                 src="${assetUrl(card.image)}" 
                  alt="${card.zh}"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
             <span class="flashcard__emoji" style="display:none;">${card.emoji}</span>

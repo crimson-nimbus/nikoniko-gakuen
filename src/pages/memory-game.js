@@ -8,6 +8,12 @@ import { playSound, speak } from '../audio.js';
 import { categories, flashcardData } from '../data/flashcard-data.js';
 import { recordGame } from '../progress.js';
 
+/** public/ 配下の静的アセットURLを解決（GitHub Pages対応） */
+const assetUrl = (path) => {
+  const base = import.meta.env.BASE_URL || '/';
+  return path.startsWith('/') ? `${base}${path.slice(1)}` : `${base}${path}`;
+};
+
 /** 難易度設定 */
 const DIFFICULTY = {
   easy: { pairs: 4, cols: 4, label: '简单 / かんたん' },
@@ -141,7 +147,7 @@ function renderBoard(container, navigate) {
                 <div class="mem-card__inner">
                   <div class="mem-card__front">❓</div>
                   <div class="mem-card__back">
-                    <img src="${card.image}" alt="${card.zh}"
+                    <img src="${assetUrl(card.image)}" alt="${card.zh}"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
                     <span class="mem-card__emoji" style="display:none;">${card.emoji}</span>
                     <span class="mem-card__label">${card.zh}</span>
