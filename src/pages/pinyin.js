@@ -19,7 +19,7 @@ const SHENGMU_ROWS = [
 
 /** 韻母（yùnmǔ）— 24個: [表示文字, 読み上げ用漢字] */
 const YUNMU_ROWS = [
-  { color: '#FFB3B3', chars: [['a', '啊'], ['o', '哦'], ['e', '鹅'], null] },
+  { color: '#FFB3B3', chars: [['a', '啊'], ['o', '喔'], ['e', '鹅'], null] },
   { color: '#FFD1A3', chars: [['i', '衣'], ['u', '乌'], ['ü', '鱼'], null] },
   { color: '#FFE8A3', chars: [['ai', '爱'], ['ei', '杯'], ['ui', '回'], null] },
   { color: '#D4F5A3', chars: [['ao', '猫'], ['ou', '狗'], ['iu', '牛'], null] },
