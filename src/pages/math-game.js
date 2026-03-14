@@ -5,7 +5,7 @@
  * 中国語 / 日本語 切替対応
  */
 import { t, getLang } from '../i18n.js';
-import { playSound, speak } from '../audio.js';
+import { playSound, speak, speakUI } from '../audio.js';
 import { recordGame } from '../progress.js';
 
 const TOTAL_QUESTIONS = 5;
@@ -159,7 +159,9 @@ function renderQuestion(container, navigate) {
       const zhText = `${q.a} ${q.operator === '+' ? '加' : '减'} ${q.b} 等于几？`;
       speak(zhText, 'zh');
     } else {
-      const jaText = `${q.a} ${q.operator === '+' ? 'たす' : 'ひく'} ${q.b} は？`;
+      const jaNum = (n) => ['ゼロ', 'いち', 'に', 'さん', 'よん', 'ご', 'ろく', 'なな', 'はち', 'きゅう', 'じゅう',
+        'じゅういち', 'じゅうに', 'じゅうさん', 'じゅうよん', 'じゅうご', 'じゅうろく', 'じゅうなな', 'じゅうはち'][n] || String(n);
+      const jaText = `${jaNum(q.a)} ${q.operator === '+' ? 'たす' : 'ひく'} ${jaNum(q.b)} は？`;
       speak(jaText, 'ja');
     }
   }, 600);
@@ -274,9 +276,10 @@ function renderResult(container, navigate) {
     </div>
   `;
 
-  // 結果読み上げ
+  // 結果読み上げ（MP3優先）
   setTimeout(() => {
-    speak(msg[voiceLang], voiceLang);
+    const uiKey = score >= 5 ? 'perfect' : score >= 4 ? 'great' : 'tryagain';
+    speakUI(uiKey, msg[voiceLang], voiceLang);
   }, 800);
 
   // もう一回

@@ -6,6 +6,12 @@
 import { t, tBoth, getAge, setAge } from '../i18n.js';
 import { playSound, initAudio } from '../audio.js';
 
+/** public/ 配下の静的アセットURLを解決（GitHub Pages対応） */
+const assetUrl = (path) => {
+  const base = import.meta.env.BASE_URL || '/';
+  return path.startsWith('/') ? `${base}${path.slice(1)}` : `${base}${path}`;
+};
+
 /**
  * ホーム画面をレンダリング
  * @param {HTMLElement} container
@@ -13,19 +19,19 @@ import { playSound, initAudio } from '../audio.js';
  */
 export function renderHome(container, navigate) {
   const allMenuItems = [
-    { id: 'flashcards', icon: '🃏', labelKey: 'flashcards', bg: 'var(--color-yellow-soft)' },
-    { id: 'memory-game', icon: '🎴', labelKey: 'memory', bg: 'var(--color-pink-soft)' },
-    { id: 'touch-play', icon: '👆', labelKey: 'touchPlay', bg: 'var(--color-pink-soft)' },
-    { id: 'videos', icon: '🎬', labelKey: 'videos', bg: 'var(--color-blue-soft)' },
-    { id: 'music', icon: '🎵', labelKey: 'music', bg: 'var(--color-green-soft)' },
-    { id: 'counting-game', icon: '🔢', labelKey: 'counting', bg: 'var(--color-green-soft)', ageGroup: '3-4' },
-    { id: 'sorting-game', icon: '📏', labelKey: 'sorting', bg: 'var(--color-orange-soft)', ageGroup: '3-4' },
-    { id: 'hiragana', icon: 'あ', labelKey: 'hiragana', bg: 'var(--color-purple-soft)', ageGroup: '5-6' },
-    { id: 'katakana', icon: 'ア', labelKey: 'katakana', bg: 'var(--color-purple-soft)', ageGroup: '5-6' },
-    { id: 'pinyin', icon: '拼', labelKey: 'pinyin', bg: 'var(--color-blue-soft)', ageGroup: '5-6' },
-    { id: 'kanji-intro', icon: '字', labelKey: 'kanjiIntro', bg: 'var(--color-orange-soft)', ageGroup: '5-6' },
-    { id: 'math-game', icon: '🧮', labelKey: 'math', bg: 'var(--color-orange-soft)', ageGroup: '5-6' },
-    { id: 'parent-dashboard', icon: '📊', labelKey: 'dashboard', bg: 'var(--color-blue-soft)' },
+    { id: 'flashcards', icon: '🃏', image: '/images/menu/flashcards.png', labelKey: 'flashcards', bg: 'var(--color-yellow-soft)' },
+    { id: 'memory-game', icon: '🎴', image: '/images/menu/memory.png', labelKey: 'memory', bg: 'var(--color-pink-soft)' },
+    { id: 'touch-play', icon: '👆', image: '/images/menu/touch.png', labelKey: 'touchPlay', bg: 'var(--color-pink-soft)' },
+    { id: 'videos', icon: '🎬', image: '/images/menu/videos.png', labelKey: 'videos', bg: 'var(--color-blue-soft)' },
+    { id: 'music', icon: '🎵', image: '/images/menu/music.png', labelKey: 'music', bg: 'var(--color-green-soft)' },
+    { id: 'counting-game', icon: '🔢', image: '/images/menu/counting.png', labelKey: 'counting', bg: 'var(--color-green-soft)', ageGroup: '3-4' },
+    { id: 'sorting-game', icon: '📏', image: '/images/menu/sorting.png', labelKey: 'sorting', bg: 'var(--color-orange-soft)', ageGroup: '3-4' },
+    { id: 'hiragana', icon: 'あ', image: '/images/menu/hiragana.png', labelKey: 'hiragana', bg: 'var(--color-purple-soft)', ageGroup: '5-6' },
+    { id: 'katakana', icon: 'ア', image: '/images/menu/katakana.png', labelKey: 'katakana', bg: 'var(--color-purple-soft)', ageGroup: '5-6' },
+    { id: 'pinyin', icon: '拼', image: '/images/menu/pinyin.png', labelKey: 'pinyin', bg: 'var(--color-blue-soft)', ageGroup: '5-6' },
+    { id: 'kanji-intro', icon: '字', image: '/images/menu/kanji.png', labelKey: 'kanjiIntro', bg: 'var(--color-orange-soft)', ageGroup: '5-6' },
+    { id: 'math-game', icon: '🧮', image: '/images/menu/math.png', labelKey: 'math', bg: 'var(--color-orange-soft)', ageGroup: '5-6' },
+    { id: 'parent-dashboard', icon: '📊', image: '/images/menu/dashboard.png', labelKey: 'dashboard', bg: 'var(--color-blue-soft)' },
   ];
 
   // 年齢フィルタリング
@@ -75,7 +81,11 @@ export function renderHome(container, navigate) {
         (item, i) => `
             <button class="home-card" data-page="${item.id}" 
                     style="background: ${item.bg}; animation-delay: ${i * 0.1}s; animation: popIn 0.5s ease ${i * 0.1}s both;">
-              <span class="home-card__icon">${item.icon}</span>
+              <img class="home-card__icon-img" 
+                   src="${assetUrl(item.image)}" 
+                   alt="${tBoth(item.labelKey).zh}"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+              <span class="home-card__icon" style="display:none;">${item.icon}</span>
               <span class="home-card__label">${tBoth(item.labelKey).zh}</span>
               <span class="home-card__label-sub">${tBoth(item.labelKey).ja}</span>
             </button>

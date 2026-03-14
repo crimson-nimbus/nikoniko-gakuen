@@ -54,7 +54,11 @@ function renderCategorySelect(container, navigate) {
         (cat, i) => `
             <button class="category-card" data-cat="${cat.id}"
                     style="background: var(${cat.colorSoftVar}); animation: popIn 0.4s ease ${i * 0.08}s both;">
-              <span class="category-card__icon">${cat.icon}</span>
+              <img class="category-card__icon-img" 
+                   src="${assetUrl(cat.categoryImage)}" 
+                   alt="${tBoth(cat.id).zh}"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+              <span class="category-card__icon" style="display:none;">${cat.icon}</span>
               <span class="category-card__label">${tBoth(cat.id).zh}</span>
               <span class="category-card__label-sub">${tBoth(cat.id).ja}</span>
             </button>
@@ -134,11 +138,8 @@ function renderCardView(container, navigate, categoryId) {
       // imageパスからファイルキーを抽出 (e.g. '/images/animals/dog.png' -> 'dog')
       const fileKey = card.image.split('/').pop().replace('.png', '');
 
-      if (lang === 'both') {
-        await speakWordBoth(categoryId, fileKey, card.ja, card.zh);
-      } else {
-        await speakWord(categoryId, fileKey, lang === 'zh' ? card.zh : card.ja, lang === 'zh' ? 'zh' : 'ja');
-      }
+      // 常に中国語→日本語の順で読み上げ
+      await speakWordBoth(categoryId, fileKey, card.ja, card.zh);
 
       setTimeout(() => flashcardEl.classList.remove('animate-bounce'), 600);
     });
@@ -174,14 +175,10 @@ function renderCardView(container, navigate, categoryId) {
       });
     }
 
-    // 初回自動読み上げ
+    // 初回自動読み上げ（中国語→日本語）
     setTimeout(async () => {
       const fileKey = card.image.split('/').pop().replace('.png', '');
-      if (lang === 'both') {
-        await speakWordBoth(categoryId, fileKey, card.ja, card.zh);
-      } else {
-        await speakWord(categoryId, fileKey, lang === 'zh' ? card.zh : card.ja, lang === 'zh' ? 'zh' : 'ja');
-      }
+      await speakWordBoth(categoryId, fileKey, card.ja, card.zh);
     }, 500);
   }
 

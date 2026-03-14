@@ -5,7 +5,7 @@
  * 5問1セット → スコア画面
  */
 import { t, tBoth, getLang } from '../i18n.js';
-import { playSound, speak, speakWord } from '../audio.js';
+import { playSound, speak, speakWord, speakUI } from '../audio.js';
 import { recordGame } from '../progress.js';
 
 const TOTAL_QUESTIONS = 5;
@@ -163,9 +163,9 @@ function renderQuestion(container, navigate) {
     });
   });
 
-  // 質問読み上げ
+  // 質問読み上げ（MP3優先）
   setTimeout(() => {
-    speak(voiceLang === 'zh' ? questionZh : questionJa, voiceLang);
+    speakUI('howmany', voiceLang === 'zh' ? questionZh : questionJa, voiceLang);
   }, 600);
 }
 
@@ -266,7 +266,10 @@ function renderResult(container, navigate) {
     </div>
   `;
 
-  setTimeout(() => speak(msg[voiceLang], voiceLang), 800);
+  setTimeout(() => {
+    const uiKey = score >= 5 ? 'perfect' : score >= 4 ? 'great' : 'tryagain';
+    speakUI(uiKey, msg[voiceLang], voiceLang);
+  }, 800);
 
   container.querySelector('#btn-count-retry').addEventListener('click', () => {
     playSound('chime');

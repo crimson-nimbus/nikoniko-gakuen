@@ -9,6 +9,7 @@ export const categories = [
     {
         id: 'animals',
         icon: '🐶',
+        categoryImage: '/images/categories/animals.png',
         colorVar: '--color-animals',
         colorSoftVar: '--color-animals-soft',
         ageGroup: '1-2',
@@ -16,6 +17,7 @@ export const categories = [
     {
         id: 'fruits',
         icon: '🍎',
+        categoryImage: '/images/categories/fruits.png',
         colorVar: '--color-fruits',
         colorSoftVar: '--color-fruits-soft',
         ageGroup: '1-2',
@@ -23,6 +25,7 @@ export const categories = [
     {
         id: 'colors',
         icon: '🎨',
+        categoryImage: '/images/categories/colors.png',
         colorVar: '--color-colors',
         colorSoftVar: '--color-colors-soft',
         ageGroup: '1-2',
@@ -30,6 +33,7 @@ export const categories = [
     {
         id: 'numbers',
         icon: '🔢',
+        categoryImage: '/images/categories/numbers.png',
         colorVar: '--color-numbers',
         colorSoftVar: '--color-numbers-soft',
         ageGroup: '1-2',
@@ -37,6 +41,7 @@ export const categories = [
     {
         id: 'vehicles',
         icon: '🚗',
+        categoryImage: '/images/categories/vehicles.png',
         colorVar: '--color-vehicles',
         colorSoftVar: '--color-vehicles-soft',
         ageGroup: '1-2',
@@ -45,6 +50,7 @@ export const categories = [
     {
         id: 'shapes',
         icon: '🔷',
+        categoryImage: '/images/categories/shapes.png',
         colorVar: '--color-shapes',
         colorSoftVar: '--color-shapes-soft',
         ageGroup: '3-4',
@@ -52,6 +58,7 @@ export const categories = [
     {
         id: 'body',
         icon: '🖐️',
+        categoryImage: '/images/categories/body.png',
         colorVar: '--color-body',
         colorSoftVar: '--color-body-soft',
         ageGroup: '3-4',
@@ -59,6 +66,7 @@ export const categories = [
     {
         id: 'food',
         icon: '🍙',
+        categoryImage: '/images/categories/food.png',
         colorVar: '--color-food',
         colorSoftVar: '--color-food-soft',
         ageGroup: '3-4',
@@ -66,6 +74,7 @@ export const categories = [
     {
         id: 'weather',
         icon: '☀️',
+        categoryImage: '/images/categories/weather.png',
         colorVar: '--color-weather',
         colorSoftVar: '--color-weather-soft',
         ageGroup: '3-4',
@@ -74,6 +83,7 @@ export const categories = [
     {
         id: 'greetings',
         icon: '👋',
+        categoryImage: '/images/categories/greetings.png',
         colorVar: '--color-greetings',
         colorSoftVar: '--color-greetings-soft',
         ageGroup: '5-6',
@@ -81,6 +91,7 @@ export const categories = [
     {
         id: 'family',
         icon: '👨‍👩‍👧',
+        categoryImage: '/images/categories/family.png',
         colorVar: '--color-family',
         colorSoftVar: '--color-family-soft',
         ageGroup: '5-6',
@@ -88,6 +99,7 @@ export const categories = [
     {
         id: 'seasons',
         icon: '🌸',
+        categoryImage: '/images/categories/seasons.png',
         colorVar: '--color-seasons',
         colorSoftVar: '--color-seasons-soft',
         ageGroup: '5-6',
@@ -96,7 +108,7 @@ export const categories = [
 
 export const flashcardData = {
     // ===========================
-    // 1-2歳カテゴリ (既存)
+    // 1-2歳カテゴリ
     // ===========================
     animals: [
         { emoji: '🐶', ja: 'いぬ', zh: '狗', pinyin: 'gǒu', image: '/images/animals/dog.png' },
@@ -109,6 +121,11 @@ export const flashcardData = {
         { emoji: '🐦', ja: 'とり', zh: '鸟', pinyin: 'niǎo', image: '/images/animals/bird.png' },
         { emoji: '🐸', ja: 'カエル', zh: '青蛙', pinyin: 'qīngwā', image: '/images/animals/frog.png' },
         { emoji: '🐻', ja: 'くま', zh: '熊', pinyin: 'xióng', image: '/images/animals/bear.png' },
+        { emoji: '🦒', ja: 'きりん', zh: '长颈鹿', pinyin: 'chángjǐnglù', image: '/images/animals/giraffe.png' },
+        { emoji: '🐧', ja: 'ペンギン', zh: '企鹅', pinyin: 'qǐ\'é', image: '/images/animals/penguin.png' },
+        { emoji: '🐬', ja: 'いるか', zh: '海豚', pinyin: 'hǎitún', image: '/images/animals/dolphin.png' },
+        { emoji: '🐿️', ja: 'りす', zh: '松鼠', pinyin: 'sōngshǔ', image: '/images/animals/squirrel.png' },
+        { emoji: '🐢', ja: 'かめ', zh: '乌龟', pinyin: 'wūguī', image: '/images/animals/turtle.png' },
     ],
 
     fruits: [
@@ -122,6 +139,11 @@ export const flashcardData = {
         { emoji: '🍒', ja: 'さくらんぼ', zh: '樱桃', pinyin: 'yīngtáo', image: '/images/fruits/cherry.png' },
         { emoji: '🍈', ja: 'メロン', zh: '蜜瓜', pinyin: 'mìguā', image: '/images/fruits/melon.png' },
         { emoji: '🥝', ja: 'キウイ', zh: '猕猴桃', pinyin: 'míhóutáo', image: '/images/fruits/kiwi.png' },
+        { emoji: '🍍', ja: 'パイナップル', zh: '菠萝', pinyin: 'bōluó', image: '/images/fruits/pineapple.png' },
+        { emoji: '🍐', ja: 'なし', zh: '梨', pinyin: 'lí', image: '/images/fruits/pear.png' },
+        { emoji: '🥭', ja: 'マンゴー', zh: '芒果', pinyin: 'mángguǒ', image: '/images/fruits/mango.png' },
+        { emoji: '🍋', ja: 'レモン', zh: '柠檬', pinyin: 'níngméng', image: '/images/fruits/lemon.png' },
+        { emoji: '🫐', ja: 'ブルーベリー', zh: '蓝莓', pinyin: 'lánméi', image: '/images/fruits/blueberry.png' },
     ],
 
     colors: [
@@ -135,6 +157,8 @@ export const flashcardData = {
         { emoji: '🟠', ja: 'オレンジ', zh: '橙色', pinyin: 'chéngsè', image: '/images/colors/orange_c.png', hex: '#F0BF8E' },
         { emoji: '🟣', ja: 'むらさき', zh: '紫色', pinyin: 'zǐsè', image: '/images/colors/purple.png', hex: '#C4A8D8' },
         { emoji: '🟤', ja: 'ちゃいろ', zh: '棕色', pinyin: 'zōngsè', image: '/images/colors/brown.png', hex: '#C4A882' },
+        { emoji: '🌟', ja: 'きんいろ', zh: '金色', pinyin: 'jīnsè', image: '/images/colors/gold.png', hex: '#D4AF37' },
+        { emoji: '🪞', ja: 'ぎんいろ', zh: '银色', pinyin: 'yínsè', image: '/images/colors/silver.png', hex: '#C0C0C0' },
     ],
 
     numbers: [
@@ -161,10 +185,15 @@ export const flashcardData = {
         { emoji: '🚑', ja: 'きゅうきゅうしゃ', zh: '救护车', pinyin: 'jiùhù chē', image: '/images/vehicles/ambulance.png' },
         { emoji: '🚓', ja: 'パトカー', zh: '警车', pinyin: 'jǐngchē', image: '/images/vehicles/police.png' },
         { emoji: '🚁', ja: 'ヘリコプター', zh: '直升机', pinyin: 'zhíshēngjī', image: '/images/vehicles/helicopter.png' },
+        { emoji: '🚀', ja: 'ロケット', zh: '火箭', pinyin: 'huǒjiàn', image: '/images/vehicles/rocket.png' },
+        { emoji: '🏗️', ja: 'ショベルカー', zh: '挖掘机', pinyin: 'wājuéjī', image: '/images/vehicles/excavator.png' },
+        { emoji: '🚛', ja: 'ゴミしゅうしゅうしゃ', zh: '垃圾车', pinyin: 'lājī chē', image: '/images/vehicles/garbage_truck.png' },
+        { emoji: '🚕', ja: 'タクシー', zh: '出租车', pinyin: 'chūzū chē', image: '/images/vehicles/taxi.png' },
+        { emoji: '🚄', ja: 'しんかんせん', zh: '新干线', pinyin: 'xīngànxiàn', image: '/images/vehicles/shinkansen.png' },
     ],
 
     // ===========================
-    // 3-4歳カテゴリ (新規)
+    // 3-4歳カテゴリ
     // ===========================
     shapes: [
         { emoji: '⭕', ja: 'まる', zh: '圆形', pinyin: 'yuánxíng', image: '/images/shapes/circle.png' },
@@ -175,6 +204,10 @@ export const flashcardData = {
         { emoji: '🔷', ja: 'ひしがた', zh: '菱形', pinyin: 'língxíng', image: '/images/shapes/diamond.png' },
         { emoji: '⬟', ja: 'ごかくけい', zh: '五边形', pinyin: 'wǔbiānxíng', image: '/images/shapes/pentagon.png' },
         { emoji: '⬡', ja: 'ろっかくけい', zh: '六边形', pinyin: 'liùbiānxíng', image: '/images/shapes/hexagon.png' },
+        { emoji: '🌙', ja: 'はんげつ', zh: '半月形', pinyin: 'bànyuèxíng', image: '/images/shapes/halfmoon.png' },
+        { emoji: '🥚', ja: 'たまごがた', zh: '椭圆形', pinyin: 'tuǒyuánxíng', image: '/images/shapes/oval.png' },
+        { emoji: '☁️', ja: 'くもがた', zh: '云形', pinyin: 'yúnxíng', image: '/images/shapes/cloud.png' },
+        { emoji: '➡️', ja: 'やじるし', zh: '箭头', pinyin: 'jiàntóu', image: '/images/shapes/arrow.png' },
     ],
 
     body: [
@@ -188,6 +221,10 @@ export const flashcardData = {
         { emoji: '🦷', ja: 'は', zh: '牙齿', pinyin: 'yáchǐ', image: '/images/body/tooth.png' },
         { emoji: '💁', ja: 'あたま', zh: '头', pinyin: 'tóu', image: '/images/body/head.png' },
         { emoji: '🫁', ja: 'おなか', zh: '肚子', pinyin: 'dùzi', image: '/images/body/tummy.png' },
+        { emoji: '🤷', ja: 'かた', zh: '肩膀', pinyin: 'jiānbǎng', image: '/images/body/shoulder.png' },
+        { emoji: '🦵', ja: 'ひざ', zh: '膝盖', pinyin: 'xīgài', image: '/images/body/knee.png' },
+        { emoji: '☝️', ja: 'ゆび', zh: '手指', pinyin: 'shǒuzhǐ', image: '/images/body/finger.png' },
+        { emoji: '💇', ja: 'かみのけ', zh: '头发', pinyin: 'tóufa', image: '/images/body/hair.png' },
     ],
 
     food: [
@@ -201,6 +238,11 @@ export const flashcardData = {
         { emoji: '🍕', ja: 'ピザ', zh: '披萨', pinyin: 'pīsà', image: '/images/food/pizza.png' },
         { emoji: '🍣', ja: 'おすし', zh: '寿司', pinyin: 'shòusī', image: '/images/food/sushi.png' },
         { emoji: '🥕', ja: 'にんじん', zh: '胡萝卜', pinyin: 'húluóbo', image: '/images/food/carrot.png' },
+        { emoji: '🍛', ja: 'カレー', zh: '咖喱饭', pinyin: 'gālí fàn', image: '/images/food/curry.png' },
+        { emoji: '🍲', ja: 'うどん', zh: '乌冬面', pinyin: 'wūdōng miàn', image: '/images/food/udon.png' },
+        { emoji: '🧊', ja: 'とうふ', zh: '豆腐', pinyin: 'dòufu', image: '/images/food/tofu.png' },
+        { emoji: '🥟', ja: 'ぎょうざ', zh: '饺子', pinyin: 'jiǎozi', image: '/images/food/gyoza.png' },
+        { emoji: '🍮', ja: 'プリン', zh: '布丁', pinyin: 'bùdīng', image: '/images/food/pudding.png' },
     ],
 
     weather: [
@@ -210,10 +252,14 @@ export const flashcardData = {
         { emoji: '❄️', ja: 'ゆき', zh: '下雪', pinyin: 'xiàxuě', image: '/images/weather/snowy.png' },
         { emoji: '🌈', ja: 'にじ', zh: '彩虹', pinyin: 'cǎihóng', image: '/images/weather/rainbow.png' },
         { emoji: '⛈️', ja: 'かみなり', zh: '打雷', pinyin: 'dǎléi', image: '/images/weather/thunder.png' },
+        { emoji: '☔', ja: 'つゆ', zh: '梅雨', pinyin: 'méiyǔ', image: '/images/weather/rainy_season.png' },
+        { emoji: '🌀', ja: 'たいふう', zh: '台风', pinyin: 'táifēng', image: '/images/weather/typhoon.png' },
+        { emoji: '🌫️', ja: 'きり', zh: '雾', pinyin: 'wù', image: '/images/weather/fog.png' },
+        { emoji: '💨', ja: 'つよいかぜ', zh: '大风', pinyin: 'dàfēng', image: '/images/weather/wind.png' },
     ],
 
     // ===========================
-    // 5-6歳カテゴリ (新規 — Session 4で画像追加)
+    // 5-6歳カテゴリ
     // ===========================
     greetings: [
         { emoji: '🌅', ja: 'おはよう', zh: '早上好', pinyin: 'zǎoshang hǎo', image: '/images/greetings/morning.png' },
@@ -224,6 +270,10 @@ export const flashcardData = {
         { emoji: '🤝', ja: 'はじめまして', zh: '初次见面', pinyin: 'chūcì jiànmiàn', image: '/images/greetings/nicetomeetyou.png' },
         { emoji: '👏', ja: 'いただきます', zh: '我开动了', pinyin: 'wǒ kāidòng le', image: '/images/greetings/itadakimasu.png' },
         { emoji: '😊', ja: 'さようなら', zh: '再见', pinyin: 'zàijiàn', image: '/images/greetings/goodbye.png' },
+        { emoji: '🏠', ja: 'おかえり', zh: '你回来啦', pinyin: 'nǐ huílái la', image: '/images/greetings/welcome_home.png' },
+        { emoji: '🚪', ja: 'ただいま', zh: '我回来了', pinyin: 'wǒ huílái le', image: '/images/greetings/im_home.png' },
+        { emoji: '🎒', ja: 'いってきます', zh: '我出门了', pinyin: 'wǒ chūmén le', image: '/images/greetings/see_you.png' },
+        { emoji: '🎉', ja: 'おめでとう', zh: '恭喜', pinyin: 'gōngxǐ', image: '/images/greetings/congratulations.png' },
     ],
 
     family: [
@@ -235,6 +285,8 @@ export const flashcardData = {
         { emoji: '👴', ja: 'おじいちゃん', zh: '爷爷', pinyin: 'yéye', image: '/images/family/grandfather.png' },
         { emoji: '👵', ja: 'おばあちゃん', zh: '奶奶', pinyin: 'nǎinai', image: '/images/family/grandmother.png' },
         { emoji: '👨‍👩‍👧‍👦', ja: 'かぞく', zh: '家人', pinyin: 'jiārén', image: '/images/family/family.png' },
+        { emoji: '👨‍🦱', ja: 'おじさん', zh: '叔叔', pinyin: 'shūshu', image: '/images/family/uncle.png' },
+        { emoji: '👩‍🦱', ja: 'おばさん', zh: '姑姑', pinyin: 'gūgu', image: '/images/family/aunt.png' },
     ],
 
     seasons: [
@@ -242,5 +294,9 @@ export const flashcardData = {
         { emoji: '🌻', ja: 'なつ', zh: '夏天', pinyin: 'xiàtiān', image: '/images/seasons/summer.png' },
         { emoji: '🍂', ja: 'あき', zh: '秋天', pinyin: 'qiūtiān', image: '/images/seasons/autumn.png' },
         { emoji: '⛄', ja: 'ふゆ', zh: '冬天', pinyin: 'dōngtiān', image: '/images/seasons/winter.png' },
+        { emoji: '🌸', ja: 'さくら', zh: '樱花', pinyin: 'yīnghuā', image: '/images/seasons/cherry_blossom.png' },
+        { emoji: '🏖️', ja: 'うみ', zh: '海滩', pinyin: 'hǎitān', image: '/images/seasons/beach.png' },
+        { emoji: '🍁', ja: 'もみじ', zh: '红叶', pinyin: 'hóngyè', image: '/images/seasons/maple.png' },
+        { emoji: '⛄', ja: 'ゆきだるま', zh: '雪人', pinyin: 'xuěrén', image: '/images/seasons/snowman.png' },
     ],
 };

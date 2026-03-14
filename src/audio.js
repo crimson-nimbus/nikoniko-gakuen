@@ -149,26 +149,38 @@ export function speakWord(category, fileKey, text, lang = 'ja') {
     if (!speechEnabled) return Promise.resolve();
 
     const base = import.meta.env.BASE_URL || '/';
-    // ピンインカテゴリは lang サブディレクトリなし（audio/pinyin/yunmu/a.mp3 の形式）
-    const isPinyin = category.startsWith('pinyin/');
-    const audioPath = isPinyin
+    // ピンイン/ひらがな/カタカナは lang サブディレクトリなし
+    const isLangless = category.startsWith('pinyin/') || category === 'hiragana' || category === 'katakana';
+    const audioPath = isLangless
         ? `${base}audio/${category}/${fileKey}.mp3`
         : `${base}audio/${category}/${lang}/${fileKey}.mp3`;
 
     return new Promise((resolve) => {
-        const audio = new Audio(audioPath);
-        audio.volume = 0.9;
+        let resolved = false;
+        const done = () => { if (!resolved) { resolved = true; resolve(); } };
 
-        audio.onended = resolve;
+        const audio = new Audio();
+        audio.volume = 0.9;
+        audio.preload = 'auto';
+
+        audio.onended = done;
+
         audio.onerror = () => {
+            if (resolved) return;
             // MP3が見つからない場合はSpeech APIにフォールバック
-            speak(text, lang).then(resolve);
+            speak(text, lang).then(done);
         };
 
-        audio.play().catch(() => {
-            // autoplay制限等でplay()が拒否された場合もフォールバック
-            speak(text, lang).then(resolve);
-        });
+        audio.oncanplaythrough = () => {
+            if (resolved) return;
+            audio.play().catch(() => {
+                if (resolved) return;
+                // autoplay制限等でplay()が拒否された場合もフォールバック
+                speak(text, lang).then(done);
+            });
+        };
+
+        audio.src = audioPath;
     });
 }
 
@@ -183,6 +195,17 @@ export async function speakWordBoth(category, fileKey, jaText, zhText) {
     await speakWord(category, fileKey, zhText, 'zh');
     await new Promise((r) => setTimeout(r, 400));
     await speakWord(category, fileKey, jaText, 'ja');
+}
+
+/**
+ * ゲームUI音声を再生（correct, wrong, perfect, great, tryagain, howmany等）
+ * audio/ui/{lang}/{key}.mp3 から再生、失敗時はテキストでフォールバック
+ * @param {string} key - ファイル名（拡張子なし）
+ * @param {string} text - フォールバック用テキスト
+ * @param {'ja' | 'zh'} lang - 言語
+ */
+export function speakUI(key, text, lang = 'zh') {
+    return speakWord('ui', key, text, lang);
 }
 
 export async function speakBoth(jaText, zhText) {

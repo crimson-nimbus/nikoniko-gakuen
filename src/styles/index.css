@@ -1846,3 +1846,51 @@ button {
   color: var(--color-text-light);
   cursor: pointer;
 }
+
+/* --- Menu / Category イラスト画像 --- */
+.home-card__icon-img {
+  width: 60%;
+  max-height: 50%;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+}
+
+.category-card__icon-img {
+  width: 55%;
+  max-height: 45%;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+}
+
+/* --- レスポンシブ: 横画面時4列グリッド --- */
+@media (orientation: landscape) and (min-width: 600px) {
+  .home-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 900px;
+    gap: var(--space-md);
+  }
+
+  .home-card {
+    aspect-ratio: 1;
+  }
+
+  .home-card__icon-img {
+    width: 50%;
+    max-height: 45%;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 900px;
+  }
+
+  .touch-mode-selector {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .flashcard {
+    width: min(50vw, 380px);
+  }
+}

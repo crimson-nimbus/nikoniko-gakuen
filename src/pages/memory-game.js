@@ -4,9 +4,12 @@
  * 難易度: 4ペア(8枚) / 6ペア(12枚)
  */
 import { t, tBoth, getLang, getAge } from '../i18n.js';
-import { playSound, speak, speakWord } from '../audio.js';
+import { playSound, speak, speakWord, speakWordBoth, speakUI } from '../audio.js';
 import { categories, flashcardData } from '../data/flashcard-data.js';
 import { recordGame } from '../progress.js';
+
+/** 音声言語（中国語デフォルト） */
+let voiceLang = 'zh';
 
 /** public/ 配下の静的アセットURLを解決（GitHub Pages対応） */
 const assetUrl = (path) => {
@@ -31,6 +34,8 @@ let moves = 0;
  * 記憶ゲーム画面をレンダリング
  */
 export function renderMemoryGame(container, navigate) {
+  const appLang = getLang();
+  voiceLang = appLang === 'ja' ? 'ja' : 'zh';
   renderDifficultySelect(container, navigate);
 }
 
@@ -131,10 +136,12 @@ function renderBoard(container, navigate) {
       <div class="page-header">
         <button class="btn-back" id="btn-back-mem-game">◀</button>
         <h1 class="page-title">${tBoth('memory').zh}</h1>
-        <div class="mem-moves" id="mem-moves" style="min-width:44px; text-align:center; font-size: var(--font-size-sm);">
-          ${moves}手
-        </div>
+        <button class="btn-back math-lang-toggle" id="btn-lang-mem"
+                style="font-size: 1.1rem; min-width: 44px;">
+          ${voiceLang === 'zh' ? '🇨🇳' : '🇯🇵'}
+        </button>
       </div>
+      <div style="text-align:center; font-size: var(--font-size-sm); padding: 0 0 var(--space-xs);">${moves}手</div>
 
       <div class="page-content page-content--scrollable">
         <div class="mem-grid" style="grid-template-columns: repeat(${cols}, 1fr);">
@@ -150,7 +157,7 @@ function renderBoard(container, navigate) {
                     <img src="${assetUrl(card.image)}" alt="${card.zh}"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
                     <span class="mem-card__emoji" style="display:none;">${card.emoji}</span>
-                    <span class="mem-card__label">${card.zh}</span>
+                    <span class="mem-card__label">${voiceLang === 'zh' ? card.zh : card.ja}</span>
                   </div>
                 </div>
               </div>
@@ -165,6 +172,13 @@ function renderBoard(container, navigate) {
   container.querySelector('#btn-back-mem-game').addEventListener('click', () => {
     playSound('pop');
     renderDifficultySelect(container, navigate);
+  });
+
+  // 言語切替
+  container.querySelector('#btn-lang-mem').addEventListener('click', () => {
+    voiceLang = voiceLang === 'zh' ? 'ja' : 'zh';
+    playSound('pop');
+    renderBoard(container, navigate);
   });
 
   // カードクリック
@@ -191,11 +205,11 @@ function handleCardClick(container, navigate, idx) {
   const cardEl = container.querySelectorAll('.mem-card')[idx];
   cardEl.classList.add('mem-card--flipped');
 
-  // MP3ファイルで中国語読み上げ（imageパスからcategoryとfileKeyを抽出）
+  // MP3ファイルで読み上げ（imageパスからcategoryとfileKeyを抽出）
   const imgParts = cards[idx].image.split('/');
   const category = imgParts[imgParts.length - 2]; // e.g. 'animals'
   const fileKey = imgParts[imgParts.length - 1].replace('.png', ''); // e.g. 'dog'
-  speakWord(category, fileKey, cards[idx].zh, 'zh');
+  speakWord(category, fileKey, voiceLang === 'zh' ? cards[idx].zh : cards[idx].ja, voiceLang);
 
   if (flipped.length === 2) {
     lockBoard = true;
@@ -282,7 +296,10 @@ function renderComplete(container, navigate) {
     </div>
   `;
 
-  setTimeout(() => speak(msg.zh, 'zh'), 600);
+  setTimeout(() => {
+    const uiKey = perfect ? 'perfect' : great ? 'great' : 'tryagain';
+    speakUI(uiKey, msg[voiceLang], voiceLang);
+  }, 600);
 
   container.querySelector('#btn-mem-retry').addEventListener('click', () => {
     playSound('chime');

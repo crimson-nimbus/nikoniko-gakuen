@@ -5,56 +5,81 @@
  * ドラッグ&ドロップ風のタップ選択UI
  */
 import { t, tBoth, getLang } from '../i18n.js';
-import { playSound, speak } from '../audio.js';
+import { playSound, speak, speakWord, speakUI } from '../audio.js';
 import { recordGame } from '../progress.js';
+
+/** 音声言語（中国語デフォルト） */
+let voiceLang = 'zh';
 
 const TOTAL_ROUNDS = 5;
 
 /** 並べ替え問題の種類 */
 const SORT_TYPES = [
-    {
-        id: 'numbers',
-        labelZh: '数字排序',
-        labelJa: 'すうじならべ',
-        icon: '🔢',
-        color: '#FFD1A3',
-        generate: () => {
-            const start = Math.floor(Math.random() * 6) + 1; // 1-6
-            const items = [];
-            for (let i = 0; i < 5; i++) items.push({ display: String(start + i), value: start + i, speak: String(start + i) });
-            return items;
-        },
+  {
+    id: 'numbers',
+    labelZh: '数字排序',
+    labelJa: 'すうじならべ',
+    icon: '🔢',
+    color: '#FFD1A3',
+    generate: () => {
+      const zhNums = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+      const jaNums = ['', 'いち', 'に', 'さん', 'よん', 'ご', 'ろく', 'なな', 'はち', 'きゅう', 'じゅう'];
+      const start = Math.floor(Math.random() * 6) + 1;
+      const items = [];
+      for (let i = 0; i < 5; i++) {
+        const n = start + i;
+        items.push({
+          display: String(n), value: n,
+          speakZh: zhNums[n], speakJa: jaNums[n],
+          audioCategory: 'numbers', audioKey: String(n),
+        });
+      }
+      return items;
     },
-    {
-        id: 'hiragana',
-        labelZh: '假名排序',
-        labelJa: 'ひらがなならべ',
-        icon: 'あ',
-        color: '#C8A3F5',
-        generate: () => {
-            const rows = [
-                ['あ', 'い', 'う', 'え', 'お'],
-                ['か', 'き', 'く', 'け', 'こ'],
-                ['さ', 'し', 'す', 'せ', 'そ'],
-                ['た', 'ち', 'つ', 'て', 'と'],
-                ['な', 'に', 'ぬ', 'ね', 'の'],
-            ];
-            const row = rows[Math.floor(Math.random() * rows.length)];
-            return row.map((ch, i) => ({ display: ch, value: i, speak: ch }));
-        },
+  },
+  {
+    id: 'hiragana',
+    labelZh: '假名排序',
+    labelJa: 'ひらがなならべ',
+    icon: 'あ',
+    color: '#C8A3F5',
+    forceJa: true,
+    generate: () => {
+      const rows = [
+        ['あ', 'い', 'う', 'え', 'お'],
+        ['か', 'き', 'く', 'け', 'こ'],
+        ['さ', 'し', 'す', 'せ', 'そ'],
+        ['た', 'ち', 'つ', 'て', 'と'],
+        ['な', 'に', 'ぬ', 'ね', 'の'],
+      ];
+      const row = rows[Math.floor(Math.random() * rows.length)];
+      return row.map((ch, i) => {
+        const fileKey = ch.codePointAt(0).toString(16).padStart(4, '0');
+        return {
+          display: ch, value: i,
+          speakZh: ch, speakJa: ch,
+          audioCategory: 'hiragana', audioKey: fileKey, audioLangless: true,
+        };
+      });
     },
-    {
-        id: 'size',
-        labelZh: '大小排序',
-        labelJa: 'おおきさならべ',
-        icon: '📏',
-        color: '#A3F5C8',
-        generate: () => {
-            const emojis = ['🐜', '🐱', '🐶', '🐘', '🐋'];
-            const names = { zh: ['蚂蚁', '猫', '狗', '大象', '鲸鱼'], ja: ['アリ', 'ネコ', 'イヌ', 'ゾウ', 'クジラ'] };
-            return emojis.map((e, i) => ({ display: e, value: i, speak: names.zh[i] }));
-        },
+  },
+  {
+    id: 'size',
+    labelZh: '大小排序',
+    labelJa: 'おおきさならべ',
+    icon: '📏',
+    color: '#A3F5C8',
+    generate: () => {
+      const emojis = ['🐜', '🐱', '🐶', '🐘', '🐋'];
+      const names = { zh: ['蚂蚁', '猫', '狗', '大象', '鲸鱼'], ja: ['アリ', 'ネコ', 'イヌ', 'ゾウ', 'クジラ'] };
+      const keys = ['ant', 'cat', 'dog', 'elephant', 'whale'];
+      return emojis.map((e, i) => ({
+        display: e, value: i,
+        speakZh: names.zh[i], speakJa: names.ja[i],
+        audioCategory: 'animals', audioKey: keys[i],
+      }));
     },
+  },
 ];
 
 let currentType = null;
@@ -71,14 +96,16 @@ let shuffledItems = [];
  * 並べ替えゲーム画面をレンダリング
  */
 export function renderSortingGame(container, navigate) {
-    renderTypeSelect(container, navigate);
+  const appLang = getLang();
+  voiceLang = appLang === 'ja' ? 'ja' : 'zh';
+  renderTypeSelect(container, navigate);
 }
 
 /**
  * モード選択画面
  */
 function renderTypeSelect(container, navigate) {
-    container.innerHTML = `
+  container.innerHTML = `
     <div class="page" id="sorting-page">
       <div class="page-header">
         <button class="btn-back" id="btn-back-sort">◀</button>
@@ -100,62 +127,71 @@ function renderTypeSelect(container, navigate) {
     </div>
   `;
 
-    container.querySelector('#btn-back-sort').addEventListener('click', () => {
-        playSound('pop');
-        navigate('home');
-    });
+  container.querySelector('#btn-back-sort').addEventListener('click', () => {
+    playSound('pop');
+    navigate('home');
+  });
 
-    container.querySelectorAll('.kanji-cat-card').forEach(btn => {
-        btn.addEventListener('click', () => {
-            currentType = SORT_TYPES[parseInt(btn.dataset.type)];
-            playSound('chime');
-            startGame(container, navigate);
-        });
+  container.querySelectorAll('.kanji-cat-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentType = SORT_TYPES[parseInt(btn.dataset.type)];
+      playSound('chime');
+      startGame(container, navigate);
     });
+  });
 }
 
 function startGame(container, navigate) {
-    rounds = [];
-    currentRound = 0;
-    score = 0;
-    for (let i = 0; i < TOTAL_ROUNDS; i++) {
-        rounds.push(currentType.generate());
-    }
-    renderRound(container, navigate);
+  rounds = [];
+  currentRound = 0;
+  score = 0;
+  for (let i = 0; i < TOTAL_ROUNDS; i++) {
+    rounds.push(currentType.generate());
+  }
+  renderRound(container, navigate);
 }
 
 function renderRound(container, navigate) {
-    const items = rounds[currentRound];
-    correctOrder = items.map((_, i) => i);
-    userOrder = [];
+  const items = rounds[currentRound];
+  correctOrder = items.map((_, i) => i);
+  userOrder = [];
 
-    // シャッフル
-    shuffledItems = [...items];
-    for (let i = shuffledItems.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledItems[i], shuffledItems[j]] = [shuffledItems[j], shuffledItems[i]];
-    }
+  // シャッフル
+  shuffledItems = [...items];
+  for (let i = shuffledItems.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledItems[i], shuffledItems[j]] = [shuffledItems[j], shuffledItems[i]];
+  }
 
-    // 進捗
-    const progress = Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
-        if (i < currentRound) return '<span class="math-progress__star math-progress__star--done">⭐</span>';
-        if (i === currentRound) return '<span class="math-progress__star math-progress__star--current">🔵</span>';
-        return '<span class="math-progress__star">⚪</span>';
-    }).join('');
+  // 進捗
+  const progress = Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
+    if (i < currentRound) return '<span class="math-progress__star math-progress__star--done">⭐</span>';
+    if (i === currentRound) return '<span class="math-progress__star math-progress__star--current">🔵</span>';
+    return '<span class="math-progress__star">⚪</span>';
+  }).join('');
 
-    const instructZh = '按正确顺序点击！';
-    const instructJa = 'ただしいじゅんばんにタップ！';
+  const instructZh = '按正确顺序点击！';
+  const instructJa = 'ただしいじゅんばんにタップ！';
 
-    renderBoard(container, navigate, progress, instructZh, instructJa);
+  renderBoard(container, navigate, progress, instructZh, instructJa);
+
+  // 問題文読み上げ
+  // 問題文読み上げ（MP3優先）
+  setTimeout(() => {
+    speakUI('sort_instruction', voiceLang === 'zh' ? instructZh : instructJa, voiceLang);
+  }, 500);
 }
 
 function renderBoard(container, navigate, progress, instructZh, instructJa) {
-    container.innerHTML = `
+  container.innerHTML = `
     <div class="page" id="sorting-round-page">
       <div class="page-header">
         <button class="btn-back" id="btn-back-sort-round">◀</button>
         <h1 class="page-title">${currentType.labelZh} ${currentRound + 1}/${TOTAL_ROUNDS}</h1>
-        <div style="width:44px"></div>
+        <button class="btn-back math-lang-toggle" id="btn-lang-sort"
+                style="font-size: 1.1rem; min-width: 44px;">
+          ${voiceLang === 'zh' ? '🇨🇳' : '🇯🇵'}
+        </button>
       </div>
       <div class="page-content">
         <div class="math-progress" style="animation: fadeIn 0.3s ease;">${progress}</div>
@@ -174,87 +210,103 @@ function renderBoard(container, navigate, progress, instructZh, instructJa) {
         <!-- シャッフルされた選択肢 -->
         <div class="sort-choices" id="sort-choices">
           ${shuffledItems.map((item, i) => {
-        const isUsed = userOrder.includes(i);
-        return `
+    const isUsed = userOrder.includes(i);
+    return `
               <button class="sort-choice ${isUsed ? 'sort-choice--used' : ''}" data-idx="${i}"
                       style="animation: popIn 0.3s ease ${i * 0.06}s both;"
                       ${isUsed ? 'disabled' : ''}>
                 ${item.display}
               </button>
             `;
-    }).join('')}
+  }).join('')}
         </div>
       </div>
     </div>
   `;
 
-    // 戻る
-    container.querySelector('#btn-back-sort-round').addEventListener('click', () => {
-        playSound('pop');
-        renderTypeSelect(container, navigate);
-    });
+  // 戻る
+  container.querySelector('#btn-back-sort-round').addEventListener('click', () => {
+    playSound('pop');
+    renderTypeSelect(container, navigate);
+  });
 
-    // 選択肢クリック
-    container.querySelectorAll('.sort-choice:not(.sort-choice--used)').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const idx = parseInt(btn.dataset.idx);
-            handleSelect(container, navigate, idx);
-        });
+  // 言語切替
+  container.querySelector('#btn-lang-sort').addEventListener('click', () => {
+    voiceLang = voiceLang === 'zh' ? 'ja' : 'zh';
+    playSound('pop');
+    renderBoard(container, navigate, progress, instructZh, instructJa);
+  });
+
+  // 選択肢クリック
+  container.querySelectorAll('.sort-choice:not(.sort-choice--used)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      handleSelect(container, navigate, idx);
     });
+  });
 }
 
 function handleSelect(container, navigate, idx) {
-    userOrder.push(idx);
-    playSound('pop');
-    speak(shuffledItems[idx].speak, currentType.id === 'hiragana' ? 'ja' : 'zh');
+  userOrder.push(idx);
+  playSound('pop');
+  const item = shuffledItems[idx];
+  const lang = currentType.forceJa ? 'ja' : voiceLang;
+  const speakText = lang === 'zh' ? item.speakZh : item.speakJa;
+  if (item.audioCategory) {
+    // MP3ファイルが存在するカテゴリはspeakWordで再生
+    speakWord(item.audioCategory, item.audioKey, speakText, item.audioLangless ? 'ja' : lang);
+  } else {
+    // MP3がないカテゴリ(size)はTTSフォールバック
+    speak(speakText, lang);
+  }
 
-    // 全て選んだか確認
-    if (userOrder.length === shuffledItems.length) {
-        // 正解判定
-        const isCorrect = userOrder.every((selectedIdx, position) => {
-            return shuffledItems[selectedIdx].value === correctOrder[position];
-        });
+  // 全て選んだか確認
+  if (userOrder.length === shuffledItems.length) {
+    // 正解判定
+    const isCorrect = userOrder.every((selectedIdx, position) => {
+      return shuffledItems[selectedIdx].value === correctOrder[position];
+    });
 
-        if (isCorrect) {
-            score++;
-            playSound('chime');
-        } else {
-            playSound('pop');
-        }
-
-        setTimeout(() => {
-            currentRound++;
-            if (currentRound >= TOTAL_ROUNDS) {
-                recordGame('sorting-game', score, TOTAL_ROUNDS);
-                renderResult(container, navigate);
-            } else {
-                renderRound(container, navigate);
-            }
-        }, isCorrect ? 1200 : 1800);
-        return;
+    if (isCorrect) {
+      score++;
+      playSound('chime');
+    } else {
+      playSound('pop');
     }
 
-    // ボードを再描画
-    const progress = Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
-        if (i < currentRound) return '<span class="math-progress__star math-progress__star--done">⭐</span>';
-        if (i === currentRound) return '<span class="math-progress__star math-progress__star--current">🔵</span>';
-        return '<span class="math-progress__star">⚪</span>';
-    }).join('');
-    renderBoard(container, navigate, progress, '按正确顺序点击！', 'ただしいじゅんばんにタップ！');
+    setTimeout(() => {
+      currentRound++;
+      if (currentRound >= TOTAL_ROUNDS) {
+        recordGame('sorting-game', score, TOTAL_ROUNDS);
+        renderResult(container, navigate);
+      } else {
+        renderRound(container, navigate);
+      }
+    }, isCorrect ? 1200 : 1800);
+    return;
+  }
+
+  // ボードを再描画
+  const progress = Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
+    if (i < currentRound) return '<span class="math-progress__star math-progress__star--done">⭐</span>';
+    if (i === currentRound) return '<span class="math-progress__star math-progress__star--current">🔵</span>';
+    return '<span class="math-progress__star">⚪</span>';
+  }).join('');
+  renderBoard(container, navigate, progress, '按正确顺序点击！', 'ただしいじゅんばんにタップ！');
 }
 
 function renderResult(container, navigate) {
-    const stars = Array.from({ length: TOTAL_ROUNDS }, (_, i) =>
-        i < score ? '⭐' : '☆'
-    ).join('');
+  const stars = Array.from({ length: TOTAL_ROUNDS }, (_, i) =>
+    i < score ? '⭐' : '☆'
+  ).join('');
 
-    const msg = score >= 5
-        ? { zh: '太棒了！完美！💯', ja: 'かんぺき！💯' }
-        : score >= 3
-            ? { zh: '做得很好！🎉', ja: 'よくできました！🎉' }
-            : { zh: '加油！再来一次！😊', ja: 'がんばったね！😊' };
+  const msg = score >= 5
+    ? { zh: '太棒了！完美！💯', ja: 'かんぺき！💯' }
+    : score >= 3
+      ? { zh: '做得很好！🎉', ja: 'よくできました！🎉' }
+      : { zh: '加油！再来一次！😊', ja: 'がんばったね！😊' };
 
-    container.innerHTML = `
+  container.innerHTML = `
     <div class="page" id="sort-result-page">
       <div class="page-header">
         <div style="width:44px"></div>
@@ -279,15 +331,18 @@ function renderResult(container, navigate) {
     </div>
   `;
 
-    setTimeout(() => speak(msg.zh, 'zh'), 600);
+  setTimeout(() => {
+    const uiKey = score >= 5 ? 'perfect' : score >= 3 ? 'great' : 'tryagain';
+    speakUI(uiKey, msg[voiceLang], voiceLang);
+  }, 600);
 
-    container.querySelector('#btn-sort-retry').addEventListener('click', () => {
-        playSound('chime');
-        renderTypeSelect(container, navigate);
-    });
+  container.querySelector('#btn-sort-retry').addEventListener('click', () => {
+    playSound('chime');
+    renderTypeSelect(container, navigate);
+  });
 
-    container.querySelector('#btn-sort-home').addEventListener('click', () => {
-        playSound('pop');
-        navigate('home');
-    });
+  container.querySelector('#btn-sort-home').addEventListener('click', () => {
+    playSound('pop');
+    navigate('home');
+  });
 }

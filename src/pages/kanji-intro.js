@@ -7,7 +7,7 @@ import { t, tBoth, getLang } from '../i18n.js';
 import { playSound, speak, speakBoth, speakWord, speakWordBoth } from '../audio.js';
 import { recordKanjiView } from '../progress.js';
 
-/** 漢字データ: [漢字, ピンイン, 中国語意味, 日本語読み, 画数] */
+/** 漢字データ: [漢字, ピンイン, 中国語意味, 日本語読み, 画数, 日本の新字体(簡体字と異なる場合のみ)] */
 const KANJI_CATEGORIES = [
   {
     id: 'numbers',
@@ -43,7 +43,7 @@ const KANJI_CATEGORIES = [
       ['木', 'mù', '树', 'き/もく', 4],
       ['花', 'huā', '花', 'はな/か', 7],
       ['雨', 'yǔ', '雨', 'あめ/う', 8],
-      ['风', 'fēng', '风', 'かぜ/ふう', 4],
+      ['风', 'fēng', '风', 'かぜ/ふう', 4, '風'],
       ['天', 'tiān', '天空', 'てん/あま', 4],
     ],
   },
@@ -54,16 +54,16 @@ const KANJI_CATEGORIES = [
     icon: '🐾',
     color: '#A3E8F5',
     chars: [
-      ['马', 'mǎ', '马', 'うま/ば', 3],
+      ['马', 'mǎ', '马', 'うま/ば', 3, '馬'],
       ['牛', 'niú', '牛', 'うし/ぎゅう', 4],
       ['羊', 'yáng', '羊', 'ひつじ/よう', 6],
-      ['鱼', 'yú', '鱼', 'さかな/ぎょ', 8],
-      ['鸟', 'niǎo', '鸟', 'とり/ちょう', 5],
+      ['鱼', 'yú', '鱼', 'さかな/ぎょ', 8, '魚'],
+      ['鸟', 'niǎo', '鸟', 'とり/ちょう', 5, '鳥'],
       ['虫', 'chóng', '虫', 'むし/ちゅう', 6],
       ['犬', 'quǎn', '狗', 'いぬ/けん', 4],
       ['猫', 'māo', '猫', 'ねこ', 11],
-      ['龙', 'lóng', '龙', 'りゅう', 5],
-      ['兔', 'tù', '兔子', 'うさぎ/と', 8],
+      ['龙', 'lóng', '龙', 'りゅう', 5, '竜'],
+      ['兔', 'tù', '兔子', 'うさぎ/と', 8, '兎'],
     ],
   },
 ];
@@ -125,7 +125,7 @@ function renderCategorySelect(container, navigate) {
  */
 function renderCharDetail(container, navigate) {
   const cat = KANJI_CATEGORIES[currentCatIdx];
-  const [kanji, pinyin, zhMeaning, jaReading, strokes] = cat.chars[currentCharIdx];
+  const [kanji, pinyin, zhMeaning, jaReading, strokes, kanjiJp] = cat.chars[currentCharIdx];
   const total = cat.chars.length;
   recordKanjiView();
   const isFirst = currentCharIdx === 0;
@@ -143,6 +143,13 @@ function renderCharDetail(container, navigate) {
         <!-- 大きい漢字表示 -->
         <div class="kanji-display" style="animation: popIn 0.5s ease both;">
           <span class="kanji-display__char" id="kanji-char">${kanji}</span>
+          ${kanjiJp ? `<div style="display:flex; align-items:center; justify-content:center; gap: var(--space-md); margin-top: var(--space-sm);">
+            <span style="font-size: 2.2rem; color: var(--color-text);">${kanji}</span>
+            <span style="font-size: 1.2rem; color: var(--color-text-light);">简</span>
+            <span style="font-size: 1.5rem; color: var(--color-text-light);">/</span>
+            <span style="font-size: 2.2rem; color: var(--color-text);">${kanjiJp}</span>
+            <span style="font-size: 1.2rem; color: var(--color-text-light);">日</span>
+          </div>` : ''}
         </div>
 
         <!-- 情報 -->
